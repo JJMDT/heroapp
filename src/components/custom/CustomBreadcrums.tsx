@@ -1,61 +1,60 @@
-import { Link, useLocation } from "react-router";
-import { ChevronDownIcon, DotIcon } from "lucide-react";
+import { Link } from "react-router";
+import { DotIcon } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+
+interface BreadcrumbItemType {
+  label: string;
+  to: string;
+}
 
 interface Props {
   currentPage: string;
-  breadcrumbs?: Breadcrumb[];
-}
-
-interface Breadcrumb {
-  label: string;
-  to: string;
+  breadcrumbs?: BreadcrumbItemType[];
 }
 
 export const CustomBreadcrums = ({ currentPage, breadcrumbs = [] }: Props) => {
   return (
     <Breadcrumb className="m-8">
       <BreadcrumbList>
+        {/* Home */}
         <BreadcrumbItem>
-          <BreadcrumbLink>
-            <Link to="/">Home</Link>
-          </BreadcrumbLink>
+          <Link
+            to="/"
+            className="transition-colors hover:text-foreground text-muted-foreground"
+          >
+            Home
+          </Link>
         </BreadcrumbItem>
 
-        {/* proximo link */}
-        {breadcrumbs?.map((crumb) => (
-          <div className="flex items-center">
+        {/* Links dinámicos */}
+        {breadcrumbs.map((crumb, index) => (
+          <div key={index} className="flex items-center">
+            <BreadcrumbSeparator>
+              <DotIcon />
+            </BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbSeparator>
-                <DotIcon />
-              </BreadcrumbSeparator>
-              <BreadcrumbLink>
-                <Link to={crumb.to}>{crumb.label}</Link>
-              </BreadcrumbLink>
+              <Link
+                to={crumb.to}
+                className="transition-colors hover:text-foreground text-muted-foreground"
+              >
+                {crumb.label}
+              </Link>
             </BreadcrumbItem>
           </div>
         ))}
+
+        {/* Página actual (sin link) */}
         <BreadcrumbSeparator>
           <DotIcon />
         </BreadcrumbSeparator>
 
         <BreadcrumbItem>
-          <BreadcrumbLink className="text-black">{currentPage}</BreadcrumbLink>
+          <span className="text-black font-medium">{currentPage}</span>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
