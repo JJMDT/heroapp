@@ -7,20 +7,19 @@ import { Heart, Eye, Zap, Brain, Gauge, Shield } from "lucide-react";
 import type { Hero } from "@/heroes/types/hero.interface";
 
 interface Props {
-  hero: Hero
+  hero: Hero;
 }
 
-const HeroGridCard = ({hero}:Props) => {
-
-  const navigate = useNavigate()
+const HeroGridCard = ({ hero }: Props) => {
+  const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/heroes/${hero.slug}`);
-  }
+  };
 
   return (
-    <Card  className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-linear-to-br from-white to-gray-50">
-      <div className="relative h-64 " >
+    <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-linear-to-br from-white to-gray-50">
+      <div className="relative h-64 ">
         <img
           onClick={handleClick}
           src={hero.image}
@@ -30,7 +29,9 @@ const HeroGridCard = ({hero}:Props) => {
 
         {/* Status indicator */}
         <div className="absolute top-3 left-3 flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-green-500" />
+          <div
+            className={`w-3 h-3 rounded-full ${hero.status === "Active" ? "bg-green-500" : "bg-red-500"} `}
+          />
           <Badge
             variant="secondary"
             className="text-xs bg-white/90 text-gray-700"
@@ -79,9 +80,7 @@ const HeroGridCard = ({hero}:Props) => {
       </CardHeader>
 
       <CardContent className="space-y-4">
-        <p className="text-sm text-gray-600 line-clamp-2">
-          {hero.description}
-        </p>
+        <p className="text-sm text-gray-600 line-clamp-2">{hero.description}</p>
 
         {/* Stats */}
         <div className="grid grid-cols-2 gap-3">
@@ -90,28 +89,44 @@ const HeroGridCard = ({hero}:Props) => {
               <Zap className="h-3 w-3 text-orange-500" />
               <span className="text-xs font-medium">Strength</span>
             </div>
-            <Progress value={hero.strength * 10} className="h-2" activeColor="bg-orange-500" />
+            <Progress
+              value={hero.strength * 10}
+              className="h-2"
+              activeColor="bg-orange-500"
+            />
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-1">
               <Brain className="h-3 w-3 text-blue-500" />
               <span className="text-xs font-medium">Intelligence</span>
             </div>
-            <Progress value={hero.intelligence * 10} className="h-2" activeColor="bg-blue-500" />
+            <Progress
+              value={hero.intelligence * 10}
+              className="h-2"
+              activeColor="bg-blue-500"
+            />
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-1">
               <Gauge className="h-3 w-3 text-green-500" />
               <span className="text-xs font-medium">Speed</span>
             </div>
-            <Progress value={hero.speed * 10} className="h-2" activeColor="bg-green-500" />
+            <Progress
+              value={hero.speed * 10}
+              className="h-2"
+              activeColor="bg-green-500"
+            />
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-1">
               <Shield className="h-3 w-3 text-purple-500" />
               <span className="text-xs font-medium">Durability</span>
             </div>
-            <Progress value={hero.durability * 10} className="h-2" activeColor="bg-purple-500" />
+            <Progress
+              value={hero.durability * 10}
+              className="h-2"
+              activeColor="bg-purple-500"
+            />
           </div>
         </div>
 
@@ -119,18 +134,16 @@ const HeroGridCard = ({hero}:Props) => {
         <div className="space-y-2">
           <h4 className="font-medium text-sm">Powers:</h4>
           <div className="flex flex-wrap gap-1">
-            {hero.powers.slice(0,3).map((power) => (
-            <Badge key={power} variant="outline" className="text-xs">
-              {power}
-            </Badge>
-
+            {hero.powers.slice(0, 3).map((power) => (
+              <Badge key={power} variant="outline" className="text-xs">
+                {power}
+              </Badge>
             ))}
-            {hero.powers.length > 3 &&(
-             <Badge variant="outline" className="text-xs bg-gray-100">
-              +{hero.powers.length - 3} more
-            </Badge>
+            {hero.powers.length > 3 && (
+              <Badge variant="outline" className="text-xs bg-gray-100">
+                +{hero.powers.length - 3} more
+              </Badge>
             )}
-           
           </div>
         </div>
 

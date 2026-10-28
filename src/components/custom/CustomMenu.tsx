@@ -6,14 +6,14 @@ const CustomMenu = () => {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <nav aria-label="Main Navigation">
+    <nav aria-label="Main Navigation" className="py-5">
       <ul className="flex items-center gap-1 list-none m-0 p-0">
         {/* Home */}
         <li>
           <Link
             to="/"
             className={cn(
-              "px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground rounded-md block",
+              "px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground rounded-md block ",
               isActive("/") &&
                 "bg-blue-300 rounded-b-md text-primary font-medium",
             )}
