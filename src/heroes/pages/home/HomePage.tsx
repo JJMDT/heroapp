@@ -5,14 +5,17 @@ import HeroStats from "@/heroes/components/HeroStats";
 import HeroGrid from "../hero/ui/HeroGrid";
 import CustomPagination from "@/components/custom/CustomPagination";
 import CustomBreadcrums from "@/components/custom/CustomBreadcrums";
-import { useMemo } from "react";
+import { use, useMemo } from "react";
 import { useHeroSummary } from "@/heroes/hooks/useHeroSummary";
 import usePaginatedHero from "@/heroes/hooks/usePaginatedHero";
+import { FavoritesHeroContext } from "@/heroes/context/FavoritesHeroContext";
 
 type TabsList = "all" | "heroes" | "villains" | "favorites";
 
 export const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { favorites, favoritesCount } = use(FavoritesHeroContext)
+
 
   const activeTab = searchParams.get("tab") ?? "all";
   const page = searchParams.get("page") ?? "1";
@@ -61,13 +64,14 @@ export const HomePage = () => {
               onClick={() =>
                 setSearchParams((prev) => {
                   prev.set("tab", "favorites");
+                  prev.set("page", "1");
                   return prev;
                 })
               }
               value="favorites"
               className="flex items-center gap-2"
             >
-              Favorites (3)
+              Favorites ({favoritesCount})
             </TabsTrigger>
             <TabsTrigger
               onClick={() =>
@@ -106,7 +110,7 @@ export const HomePage = () => {
           <TabsContent value="favorites">
             {/* Mostrar todos los personajes favoritos */}
             <h1>favorites</h1>
-            <HeroGrid heroes={[]} />
+            <HeroGrid heroes={favorites ?? []} />
           </TabsContent>
           <TabsContent value="heroes">
             {/* Mostrar todos los heroes */}
@@ -121,7 +125,10 @@ export const HomePage = () => {
         </Tabs>
 
         {/* Pagination */}
-        <CustomPagination totalPages={Number(heroeResponse?.pages)} />
+        {selectedTab !== 'favorites' && (
+          <CustomPagination totalPages={Number(heroeResponse?.pages)} />
+
+        )}
       </>
     </>
   );
